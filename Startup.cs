@@ -25,7 +25,7 @@ namespace TestApplication
             services.AddControllers();
             services.AddDbContext<Context>(opt =>
             {
-                opt.UseMySql(Configuration.GetConnectionString(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
+                opt.UseMySql(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
             });
 
             services.AddSwaggerGen(swagger =>  
