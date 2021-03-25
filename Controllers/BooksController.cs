@@ -111,30 +111,27 @@ namespace TestApplication.Controllers
                 return book;
             }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update_Books(int id, BookDTO book)
+        [HttpGet("{id}")]
+        public ActionResult<BookDTO> GetBooks_byId(int id)
         {
-            if(id != book.Book_id || !BookExists(id))
+            var book = from books in _context.Book
+            join book_descriptions in _context.Book_Description on books.id equals book_descriptions.book_id
+            select new BookDTO
             {
-                return BadRequest();
-            }
-            else 
+                Book_id = books.id,
+                Book_price = books.price,
+                ISBN = books.isbn,
+                Book_name = book_descriptions.book_name,
+                Book_description = book_descriptions.book_description
+            };
+
+            var book_by_id = book.ToList().Find(x => x.Book_id == id);
+
+            if (book_by_id == null)
             {
-                var books = _context.Book.SingleOrDefault(x => x.id == id);
-                var books_description = _context.Book_Description.SingleOrDefault(x => x.book_id == id);
-
-                books.isbn = book.ISBN;
-                books.price = book.Book_price;
-                books_description.book_name = book.Book_name;
-                books_description.book_description = book.Book_description;
-                await _context.SaveChangesAsync();
-                return NoContent();
+                return NotFound();
             }
-        }
-
-        private bool BookExists(int id)
-        {
-            return _context.Book.Any(x => x.id == id);
+            return book_by_id;
         }
     }
 }
