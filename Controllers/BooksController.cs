@@ -111,7 +111,7 @@ namespace TestApplication.Controllers
                 return book;
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]  
         public ActionResult<BookDTO> GetBooks_byId(int id)
         {
             var book = from books in _context.Book
