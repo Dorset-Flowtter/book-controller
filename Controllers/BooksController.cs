@@ -64,5 +64,52 @@ namespace TestApplication.Controllers
         {
             return _context.Book.Any(x => x.id == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<BookDTO>> Add_Books(AddBook bookDTO)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var book = new Book()
+            {
+                isbn = bookDTO.ISBN,
+                price = bookDTO.Book_price
+            };
+            await _context.Book.AddAsync(book);
+            await _context.SaveChangesAsync();
+
+            var book_description = new Book_description()
+            {
+                book_id = book.id,
+                book_name = bookDTO.Book_name,
+                book_description = bookDTO.Book_description
+            };
+            await _context.AddAsync(book_description);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetBooks", new { id = book.id}, bookDTO);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Book>> Delete_Book(int id)
+        {
+            var book = _context.Book.Find(id);
+            var book_description = _context.Book_Description.SingleOrDefault(x => x.book_id == id);
+
+            if(book == null)
+            {
+                return NotFound();
+            }
+            else 
+            {
+                _context.Remove(book);
+                _context.Remove(book_description);
+                await _context.SaveChangesAsync();
+                return book;
+            }
+        }
     }
 }
