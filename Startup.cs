@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TestApplication.Data;
+using System;
 
 namespace TestApplication
 {
@@ -24,7 +25,7 @@ namespace TestApplication
             services.AddControllers();
             services.AddDbContext<Context>(opt =>
             {
-                opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseMySql(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
             });
 
             services.AddSwaggerGen(swagger =>  
