@@ -9,3 +9,4 @@ obj
 *appsettings.json
 wwwroot
 publish
+data/*

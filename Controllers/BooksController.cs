@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TestApplication.Data;
-using TestApplication.DTO;
+using book.Data;
+using book.DTO;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using TestApplication.Models;
+using book.Models;
 using DTO;
 
-namespace TestApplication.Controllers
+namespace book.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BooksController : ControllerBase

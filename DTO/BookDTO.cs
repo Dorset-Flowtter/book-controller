@@ -1,4 +1,4 @@
-namespace TestApplication.DTO
+namespace book.DTO
 {
     public class BookDTO
     {
