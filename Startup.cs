@@ -30,14 +30,14 @@ namespace book
         {
             services.AddDbContext<Context>(opt =>
             {
-                opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseMySql(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
             });
             services.AddCors();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // configure jwt authentication
-            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
